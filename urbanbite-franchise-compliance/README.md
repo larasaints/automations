@@ -1,6 +1,6 @@
 # UrbanBite Franchise Compliance Automation
 
-> A self-directed multi-Zap workflow automation project designed to centralize franchise compliance monitoring, issue tracking, document expiration alerts, and operational escalation.
+> A multi-Zap workflow automation project designed to automate franchise inspections, issue tracking, monthly compliance monitoring, document expiration alerts, and operational escalation.
 
 **Project Type:** Workflow Automation / Operations <br>
 **Business:** Fictional Franchise Network — UrbanBite <br>
@@ -20,10 +20,9 @@ The solution consists of five interconnected automation workflows covering compl
 
 ### Business Problem
 
-Franchise operations teams often need to monitor compliance across multiple locations while handling reports, corrective actions, document renewals, and follow-ups.
+UrbanBite manages multiple franchise locations that need regular compliance inspections. Without a centralized workflow, inspection results, unresolved issues, expiring documents, and monthly compliance checks can require repetitive manual monitoring and follow-up.
 
 When these activities are managed manually, several operational problems can occur:
-
 * Compliance submissions may be missed or delayed.
 * Issues requiring corrective action can remain unresolved.
 * Overdue issues may not be escalated promptly.
@@ -34,7 +33,6 @@ When these activities are managed manually, several operational problems can occ
 ### The Automation Challenge
 
 The objective of this project was to design a system that could automatically:
-
 1. Capture and organize compliance submissions.
 2. Identify issues and route them for corrective action.
 3. Monitor unresolved and overdue issues.
@@ -44,26 +42,25 @@ The objective of this project was to design a system that could automatically:
 7. Provide a centralized dashboard for compliance visibility.
 
 ### Automation Solution
-
-I designed UrbanBite as a centralized compliance automation system where operational events are captured, processed, monitored, and escalated through connected workflows.
+I designed a five-Zap automation system that connects franchise inspection forms, operational spreadsheets, scheduled monitoring, issue resolution, escalation, expiration alerts, and monthly compliance reporting.
 
 Instead of relying on a single automation, the solution uses five specialized workflows, each responsible for a different operational process.
 
 ### System Flow
 
-**Google Forms / Google Sheets**
-↓
-**Data Processing & Validation**
-↓
-**Compliance Records & Issue Tracking**
-↓
-**Automated Monitoring**
-↓
-**Alerts & Escalations**
-↓
-**Operations Dashboard**
+**Google Forms / Google Sheets** <br>
+↓  <br>
+**Data Processing & Validation**  <br>
+↓ <br>
+**Compliance Records & Issue Tracking**  <br>
+↓ <br>
+**Automated Monitoring**  <br>
+↓ <br>
+**Alerts & Escalations**  <br>
+↓ <br>
+**Operations Dashboard**  <br>
 
-### Five Automation Workflows
+### Five Automation Workflows  <br>
 
 | Automation                                     | Purpose                                                                                                                       |
 | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
@@ -78,7 +75,6 @@ Instead of relying on a single automation, the solution uses five specialized wo
 Google Sheets acts as the operational data layer for the system.
 
 The solution uses separate worksheets for:
-
 * Franchise information
 * Compliance reports
 * Issues and corrective actions
