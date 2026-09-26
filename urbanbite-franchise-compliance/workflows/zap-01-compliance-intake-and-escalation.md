@@ -1,4 +1,4 @@
-# Workflow 1 — New Franchise Compliance Submission & Escalation
+# Zap 02 — New Franchise Compliance Submission & Escalation
 
 **Compliance Submission → Issue Detection → HQ Notification → Urgent Escalation**
 
