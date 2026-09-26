@@ -357,7 +357,7 @@ Instead of relying on manual monitoring, HQ receives automated visibility when c
 
 ## Next Workflow
 
-**Workflow 2 — Issue Resolution**
+**[WORKFLOW ZAP 2 — Issue Resolution and Corrective Action**](https://github.com/larasaints/automations/blob/c51444d2753b3c1e27e7c872d88b67fa26043ed7/urbanbite-franchise-compliance/workflows/zap-02-issue-resolution-and-corrective-action.md)
 
 The next workflow handles the corrective-action side of the process:
 
