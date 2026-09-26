@@ -1,359 +1,454 @@
-# Zap 1 — New Franchise Compliance Submission & Escalation
-
-**Compliance Submission → Issue Detection → HQ Notification → Urgent Escalation**
+# Zap 1 — New Compliance Submission
 
 ## Overview
 
-This workflow automates the processing of monthly franchise compliance inspections for the UrbanBite Franchise Network.
+**Purpose:** Automatically process new franchise compliance submissions, create compliance records, identify reported issues, and escalate urgent issues to the operations team.
 
-When a franchise manager submits the monthly compliance inspection, the workflow records the submission, creates a compliance report, detects reported issues, creates an issue record, notifies HQ, and escalates urgent issues with a tracked due date.
+**Automation:** UB - New Franchise Compliance Submission
+
+**Platform:** Zapier
+
+**Primary Tools:** Google Forms, Google Sheets, Formatter by Zapier, Gmail
+
+**Trigger:** New compliance submission received through the Google Form
 
 ---
 
 ## Business Problem
 
-UrbanBite manages 100+ franchise locations across multiple regions.
+Franchise compliance reports can contain multiple operational checks and may identify issues requiring immediate attention.
 
-HQ needs to:
+Without automation, operations teams would need to:
 
-* Receive monthly compliance submissions
-* Maintain a centralized compliance record
-* Identify failed or reported requirements
-* Track issues requiring corrective action
-* Notify HQ when issues are identified
-* Escalate urgent issues immediately
-* Maintain an audit trail for escalation and deadlines
+* Review every submitted compliance report manually.
+* Create compliance records.
+* Create separate issue records when problems are reported.
+* Determine which issues require urgent escalation.
+* Notify the appropriate operations team.
+* Calculate follow-up deadlines.
 
-Without automation, these activities could require repetitive manual review and follow-up.
+Zap 1 automates this process from submission through issue escalation.
 
 ---
 
-## Workflow Architecture
+## Workflow
 
 ```text
-Franchise Manager
-       ↓
-Google Compliance Form
-       ↓
+Google Form
+New Compliance Submission
+        ↓
+Google Sheets
+Form Responses 1
+        ↓
+Zapier Trigger
 New Spreadsheet Row
-       ↓
+        ↓
+Formatter
 Format Submission Timestamp
-       ↓
+        ↓
+Google Sheets
 Create Compliance Report
-       ↓
-Issue Identified?
-    ┌──┴──┐
-   NO     YES
-   ↓       ↓
-  END   Format Issue Timestamp
-           ↓
-       Create Issue
-           ↓
-       Email HQ
-           ↓
-      Priority = URGENT?
-        ┌───┴───┐
-       NO       YES
-       ↓         ↓
-   Normal     Urgent
-   workflow   escalation
-                 ↓
-            Urgent Email
-                 ↓
-            Update Issue
-                 ↓
-        Escalation Status
-           = Escalated
-                 ↓
-          Due Date = +1 day
+        ↓
+Filter
+Issues Found = Yes?
+        ↓
+       YES
+        ↓
+Formatter
+Format Issue Timestamp
+        ↓
+Google Sheets
+Create Issue Record
+        ↓
+Gmail
+Compliance Issue Alert
+        ↓
+Filter
+Priority = Urgent?
+        ↓
+       YES
+        ↓
+Gmail
+Urgent Escalation
+        ↓
+Google Sheets
+Update Urgent Issue Record
+        ↓
+Formatter
+Calculate Due Date
 ```
 
 ---
 
-## Trigger
+## Step-by-Step Workflow
 
-**Google Sheets — New Spreadsheet Row**
-
-The Google Compliance Form is connected to a Google Sheets response sheet.
-
-When a franchise manager submits an inspection, a new spreadsheet row is created and triggers the Zap.
-
----
-
-## Automation Steps
-
-### 1. New Spreadsheet Row
+### Step 1 — Trigger: New Compliance Submission
 
 **App:** Google Sheets
-**Event:** New Spreadsheet Row
 
-Captures the newly submitted monthly compliance inspection.
+**Trigger:** New Spreadsheet Row
+
+**Source:** `Form Responses 1`
+
+The Google Form collects the franchise compliance submission. The responses are automatically stored in the Google Sheets response worksheet.
+
+When a new response creates a row, Zapier starts the workflow.
+
+**Trigger data includes information such as:**
+
+* Franchise ID
+* Location
+* Manager
+* Compliance check results
+* Required documents
+* Store photos
+* Overall status
+* Issues found
+* Issue description
+* Issue priority
 
 ---
 
-### 2. Format Submission Timestamp
+### Step 2 — Format Submission Timestamp
 
 **App:** Formatter by Zapier
-**Action:** Date/Time
 
-Processes the inspection timestamp into the format required for the compliance report.
+**Tool:** Date/Time
+
+The original submission timestamp is formatted into a consistent value that can be used when creating the compliance record.
+
+**Output format:**
+
+```text
+YYYYMMDD-HHmmss
+```
+
+This standardized timestamp supports the creation of unique report identifiers.
 
 ---
 
-### 3. Create Compliance Report
+### Step 3 — Create Compliance Report
 
 **App:** Google Sheets
+
 **Action:** Create Spreadsheet Row
 
-Creates a structured record in the `Compliance_Reports` sheet.
+**Worksheet:** `Compliance_Reports`
 
-The record connects the inspection submission to the UrbanBite compliance database.
+The automation creates a permanent compliance report record using the submitted information.
+
+The record includes fields such as:
+
+* Report ID
+* Submission Date
+* Franchise ID
+* Location
+* Manager
+* Safety Check
+* Inventory Check
+* Equipment Check
+* Required Documents
+* Store Photos
+* Overall Status
+* Issues Found
+* Issue Description
+* Issue Priority
+* Resolution Status
+
+The generated report ID follows the project's structured naming convention.
+
+**Example:**
+
+```text
+RPT-FR-003-20260923-141535
+```
 
 ---
 
-### 4. Detect Reported Issue
+## Decision Point — Was an Issue Reported?
+
+### Step 4 — Filter
 
 **App:** Filter by Zapier
+
 **Condition:**
 
-`Did you identify any compliance issues? = Yes`
+```text
+Issues Found = Yes
+```
 
-If no issue was identified, the workflow stops at this branch.
+If no issue was reported, the issue-management branch does not continue.
 
-If an issue was identified, the workflow continues to issue creation.
+If an issue was reported, the automation continues to create an issue record.
+
+This prevents unnecessary issue records from being created for clean compliance submissions.
 
 ---
 
-### 5. Format Issue Timestamp
+### Step 5 — Format Issue Timestamp
 
 **App:** Formatter by Zapier
-**Action:** Date/Time
 
-Generates/processes the timestamp used for the issue record.
+**Tool:** Date/Time
+
+The submission timestamp is formatted again for use in the issue record and issue identifier.
+
+**Output format:**
+
+```text
+YYYYMMDD-HHmmss
+```
 
 ---
 
-### 6. Create Issue
+### Step 6 — Create Issue Record
 
 **App:** Google Sheets
+
 **Action:** Create Spreadsheet Row
 
-Creates a new record in the `Issues` sheet.
+**Worksheet:** `Issues`
 
-The issue is connected to the originating compliance submission so the problem can be tracked through the corrective-action process.
+When a compliance submission identifies an issue, Zapier creates a corresponding issue record.
+
+The issue record stores operational information such as:
+
+* Issue ID
+* Report ID
+* Franchise ID
+* Location
+* Category
+* Description
+* Priority
+* Date Reported
+* Assigned To
+* Status
+* Due Date
+* Resolution Status
+* Escalation Status
+
+**Example issue ID:**
+
+```text
+ISS-FR-003-20260923-141535
+```
+
+This creates a direct relationship between the compliance report and the issue record.
 
 ---
 
-### 7. Send Normal HQ Alert
+### Step 7 — Compliance Issue Alert
 
 **App:** Gmail
+
 **Action:** Send Email
 
-HQ receives an automated notification when a compliance issue has been identified.
+A notification is sent to the operations team when a compliance submission identifies an issue.
 
-This creates immediate visibility without requiring HQ to manually monitor the compliance sheet.
+The alert provides the information needed for the operations team to begin reviewing and addressing the issue.
 
 ---
 
-### 8. Check Issue Priority
+## Decision Point — Is the Issue Urgent?
+
+### Step 8 — Filter
 
 **App:** Filter by Zapier
+
 **Condition:**
 
-`Priority = Urgent`
+```text
+Priority = Urgent
+```
 
-The workflow separates urgent issues from normal/high-priority issues.
+Only urgent issues continue to the escalation branch.
 
-Non-urgent issues remain in the normal issue-tracking process.
-
-Urgent issues continue to the escalation path.
+This creates a second level of conditional routing within the automation.
 
 ---
 
-### 9. Send Urgent Escalation
+### Step 9 — Urgent Escalation
 
 **App:** Gmail
+
 **Action:** Send Email
 
-A separate urgent escalation notification is sent to HQ when the issue priority is `Urgent`.
+If the issue is marked as urgent, Zapier sends a separate escalation notification to the operations team.
 
-This creates a distinct notification path for higher-priority operational issues.
+This ensures urgent compliance issues receive additional visibility instead of relying only on the standard issue notification.
 
 ---
 
-### 10. Update Issue — Escalation Tracking
+### Step 10 — Update Urgent Issue Record
 
 **App:** Google Sheets
+
 **Action:** Update Spreadsheet Row
 
-The specific issue record is updated with escalation information.
+The urgent issue record is updated using the dynamically created issue row.
 
-**Escalation_Status:**
-
-`Escalated`
-
-**Escalation_Date:**
-
-Timestamp of the escalation.
+This allows the escalation information to remain associated with the correct issue rather than relying on a hard-coded spreadsheet row.
 
 ---
 
-### 11. Calculate Urgent Due Date
+### Step 11 — Calculate Follow-Up Due Date
 
 **App:** Formatter by Zapier
-**Action:** Date/Time
 
-For the current UrbanBite business rule, urgent issues receive a target due date of:
+**Tool:** Date/Time
 
-**+1 day**
+The automation calculates the follow-up deadline for urgent issues.
 
-This establishes a corrective-action deadline for urgent issues.
-
----
-
-## Current Business Rules
-
-| Priority | Target Resolution |
-| -------- | ----------------: |
-| Low      |            7 days |
-| Medium   |            5 days |
-| High     |            3 days |
-| Urgent   |             1 day |
-
-**Current Zap implementation:** the automated due-date calculation has been implemented for the **Urgent** path using a +1 day rule.
-
-The other priority targets are part of the defined UrbanBite business rules and can be automated in a later enhancement.
-
----
-
-## Data Flow
+**Calculation:**
 
 ```text
-Compliance Form
-      ↓
-Form Response Sheet
-      ↓
-Compliance_Reports
-      ↓
-Issues
-      ↓
-HQ Notification
-      ↓
-Urgent Escalation
-      ↓
-Issue Update
-      ↓
-Resolution Tracking
+Submission Date + 1 day
 ```
 
-Each issue can therefore be traced through the process:
+**Output format:**
 
-**Compliance Report → Issue → Resolution**
+```text
+MM/DD/YYYY
+```
 
----
-
-## Test Cases
-
-### Test 1 — Fully Compliant
-
-**Franchise ID:** FR-001
-**Location:** Makati
-**Manager:** Anna Cruz
-
-* Safety: Pass
-* Inventory: Pass
-* Equipment: Pass
-* Documents: Complete
-* Photos: Submitted
-* Issues: No
-* Overall Status: Compliant
-
-**Expected behavior:**
-
-The compliance report is created, but no issue is created and no escalation occurs.
+The resulting date is used as the urgent issue's follow-up due date.
 
 ---
 
-### Test 2 — High Priority Issue
+# Data Flow
 
-**Franchise ID:** FR-002
-**Location:** Imus
-**Manager:** Carlo Reyes
-
-* Equipment: Fail
-* Documents: Expired
-* Issues: Yes
-* Category: Equipment
-* Description: Freezer is not maintaining the required temperature.
-* Priority: High
-* Overall Status: Needs Attention
-
-**Observed behavior:**
-
-* Compliance report created
-* Issue created
-* Normal HQ issue alert sent
-* Urgent escalation not triggered
-
----
-
-### Test 3 — Urgent Issue
-
-**Franchise ID:** FR-003
-
-**Priority:** Urgent
-
-**Observed behavior:**
-
-* Compliance report created
-* Issue created
-* Normal HQ issue alert sent
-* Urgent escalation email sent
-* Issue marked `Escalated`
-* Escalation timestamp recorded
-* Due date calculated as +1 day
+```text
+Google Form
+     │
+     ▼
+Form Responses 1
+     │
+     ▼
+Zapier
+     │
+     ├──► Compliance_Reports
+     │
+     └──► Issues
+              │
+              ▼
+        Priority Check
+          │       │
+       Normal   Urgent
+          │       │
+          ▼       ▼
+       Gmail    Gmail
+                Escalation
+                  │
+                  ▼
+              Issue Update
+```
 
 ---
 
-## Tools Used
+# Key Automation Logic
 
-| Tool                | Purpose                              |
-| ------------------- | ------------------------------------ |
-| Google Forms        | Franchise compliance data collection |
-| Google Sheets       | Compliance and issue database        |
-| Zapier              | Workflow automation                  |
-| Formatter by Zapier | Date/time processing                 |
-| Filter by Zapier    | Conditional business logic           |
-| Gmail               | HQ notifications and escalation      |
+### Conditional Routing
 
----
+The workflow uses two decision points:
 
-## Automation Concepts Demonstrated
+**Decision 1**
 
-* Event-driven automation
-* Multi-step workflow design
-* Data transformation
-* Conditional logic
-* Exception detection
-* Issue creation
-* Priority-based routing
-* Automated notifications
-* Escalation workflows
-* Due-date calculation
-* Operational audit trails
-* Cross-record traceability
+```text
+Issues Found = Yes?
+```
+
+This determines whether an issue record should be created.
+
+**Decision 2**
+
+```text
+Priority = Urgent?
+```
+
+This determines whether an additional escalation notification should be sent.
 
 ---
 
-## Business Outcome
+## Record Relationships
 
-The workflow turns a franchise compliance submission into a structured operational process:
+The automation creates a relationship between compliance reports and issues.
 
-**Submit → Record → Detect → Create Issue → Notify → Escalate → Track**
+```text
+Compliance Report
+RPT-FR-003-20260923-141535
+        │
+        └──────► Issue
+                 ISS-FR-003-20260923-141535
+```
 
-Instead of relying on manual monitoring, HQ receives automated visibility when compliance issues are reported and receives a separate escalation when an issue is classified as urgent.
+This allows operations teams to trace an issue back to the original compliance submission.
 
 ---
+
+# Example Scenario
+
+A franchise submits its monthly compliance inspection.
+
+The submission indicates:
+
+```text
+Issues Found: Yes
+Priority: Urgent
+```
+
+Zap 1 automatically:
+
+1. Detects the new submission.
+2. Formats the submission timestamp.
+3. Creates a compliance report.
+4. Detects that an issue was reported.
+5. Creates an issue record.
+6. Sends a standard compliance issue alert.
+7. Detects that the issue is urgent.
+8. Sends an urgent escalation email.
+9. Updates the corresponding issue record.
+10. Calculates the follow-up deadline.
+
+The operations team therefore receives the required notifications without manually monitoring the form responses.
+
+---
+
+# Business Outcome
+
+Zap 1 reduces manual compliance administration by connecting submission intake, record creation, conditional issue routing, notifications, and escalation.
+
+### Operational benefits
+
+* Faster processing of new compliance submissions
+* Consistent compliance record creation
+* Automatic issue tracking
+* Conditional urgent escalation
+* Standardized timestamps and identifiers
+* Reduced manual spreadsheet updates
+* Traceability between compliance reports and issues
+* Faster visibility into urgent operational risks
+
+---
+
+# Tools Used
+
+| Tool                    | Role                                           |
+| ----------------------- | ---------------------------------------------- |
+| **Google Forms**        | Collects compliance submissions                |
+| **Google Sheets**       | Stores form responses and operational records  |
+| **Zapier**              | Orchestrates the workflow                      |
+| **Formatter by Zapier** | Standardizes timestamps and calculates dates   |
+| **Filter by Zapier**    | Controls conditional routing                   |
+| **Gmail**               | Sends compliance alerts and urgent escalations |
+
+---
+
+## Automation Design Pattern
+
+**Event → Process → Create Record → Evaluate → Route → Notify → Update**
+
+This Zap demonstrates a multi-step operational automation pattern combining data processing, conditional logic, record management, and escalation.
+
 
 ## Next Workflow
 
