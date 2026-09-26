@@ -1,6 +1,6 @@
 # UrbanBite Franchise Compliance Automation
 
-> A self-directed workflow automation project designed to centralize franchise compliance monitoring, issue tracking, document expiration alerts, and operational escalation.
+> A self-directed multi-Zap workflow automation project designed to centralize franchise compliance monitoring, issue tracking, document expiration alerts, and operational escalation.
 
 **Project Type:** Workflow Automation / Operations <br>
 **Business:** Fictional Franchise Network — UrbanBite <br>
@@ -67,11 +67,11 @@ Instead of relying on a single automation, the solution uses five specialized wo
 
 | Automation                                     | Purpose                                                                                                                       |
 | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **01 — New Compliance Submission**             | Captures new compliance submissions, creates compliance records, identifies reported issues, and triggers appropriate alerts. |
-| **02 — Issue Resolution & Corrective Action**  | Processes issue-resolution submissions, updates issue records, and triggers follow-up notifications when required.            |
-| **03 — Overdue Issue Monitoring & Escalation** | Automatically identifies overdue issues and sends a consolidated escalation report.                                           |
-| **04 — Document Expiration Monitoring**        | Monitors franchise documents and identifies expired or upcoming expirations requiring renewal action.                         |
-| **05 — Missing Monthly Compliance Submission** | Checks active franchises for missing monthly submissions and sends consolidated reminders while preventing duplicate alerts.  |
+| **ZAP 01 — New Compliance Submission**             | Captures new compliance submissions, creates compliance records, identifies reported issues, and triggers appropriate alerts. |
+| **ZAP 02 — Issue Resolution & Corrective Action**  | Processes issue-resolution submissions, updates issue records, and triggers follow-up notifications when required.            |
+| **ZAP 03 — Overdue Issue Monitoring & Escalation** | Automatically identifies overdue issues and sends a consolidated escalation report.                                           |
+| **ZAP 04 — Document Expiration Monitoring**        | Monitors franchise documents and identifies expired or upcoming expirations requiring renewal action.                         |
+| **ZAP 05 — Missing Monthly Compliance Submission** | Checks active franchises for missing monthly submissions and sends consolidated reminders while preventing duplicate alerts.  |
 
 ### Centralized Data Structure
 
