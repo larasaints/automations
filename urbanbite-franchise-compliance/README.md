@@ -17,7 +17,7 @@ The system connects form submissions, Google Sheets data, automated notification
 The solution consists of five interconnected automation workflows covering compliance submissions, issue resolution, overdue escalation, document expiration, and missing monthly reports.
 
 ## 🎥 Project Walkthrough
-
+Watch the complete walkthrough covering the business problem, system architecture, five automation workflows, workflow logic, and operational outcomes.
 [▶️ Watch the UrbanBite Automation Walkthrough on Loom](https://www.loom.com/share/465b4946e5f7434ba5092fd0746fdb20)
 
 ----
