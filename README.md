@@ -12,13 +12,15 @@ A curated index of production-grade workflow automation architectures, event-dri
 * **Architecture:** Multi-Zap Relational Ecosystem (5 Interconnected Workflows)
 * **Description:** A simulated enterprise operations layer that completely automates franchise inspection lifecycles. The system captures compliance data, registers tracking records, runs time-interval deadline audits, manages multi-tiered team escalations, and surfaces real-time metrics onto a centralized dashboard.
 * **Deep Dive:** 💻 [View Project Folder & Documentation](https://github.com/larasaints/automations/tree/685be2abc4566d5416047f93122ac4efc501d67e/urbanbite-franchise-compliance)
-
+* **Loom Walkthrough** [View Loom Video](https://www.loom.com/share/465b4946e5f7434ba5092fd0746fdb20)
+* 
 ### 2. 🎧 AI Customer Support Automation & Intelligent Ticket Triage Engine
 
 * **Core Stack:** n8n, Google Gemini, Airtable, Gmail, Webhooks
 * **Architecture:** Event-Driven AI Support Pipeline with Duplicate Prevention, Human-in-the-Loop Escalation & Error Handling
 * **Description:** An AI-assisted customer support intake and triage system that receives customer messages through a webhook, uses Gemini to classify support requests and generate draft responses, logs structured ticket data in Airtable, prevents duplicate processing, and automatically escalates refund requests and low-confidence cases for human review.
 * **Deep Dive:** 💻 [View Project Folder & Documentation](https://github.com/larasaints/automations/tree/main/ai-customer-support-automation)
+* **Loom Walkthrough** [View Loom Video](https://www.loom.com/share/cef927cb92fa497eac2138751f16213b)
 
 ### 3. ⚡ Hands-Free AI-Powered Facebook Leads Automation Engine
 
