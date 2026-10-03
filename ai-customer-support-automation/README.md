@@ -2,65 +2,37 @@
 
 An AI-powered customer support workflow built with **n8n, Google Gemini, Airtable, Gmail, and Webhooks**.
 
-This automation streamlines the initial handling of customer support messages by automatically classifying requests, generating draft responses, identifying cases that require human review, preventing duplicate processing, tracking ticket status, and handling workflow errors.
+This automation receives customer support messages, uses AI to classify and understand requests, generates a draft response, logs the ticket, and automatically routes sensitive or uncertain requests for human review.
 
 ---
 
-## 📌 Project Overview
+## Project Overview
+
+Customer support teams often spend significant time manually reviewing incoming messages, categorizing requests, creating tickets, and deciding which cases need escalation.
+
+This workflow automates the initial support triage process while keeping humans in control of sensitive cases such as refund requests and low-confidence requests.
 
 ### Business Problem
 
-Customer support teams often spend significant time performing repetitive tasks when new customer messages arrive:
+Without automation, support teams may need to:
 
-* Reading and understanding each request
-* Determining the type of issue
-* Creating and updating support records
-* Drafting initial responses
-* Identifying requests that require escalation
-* Tracking ticket status
-* Monitoring workflow failures
+* Read every incoming customer message manually
+* Determine the type of request
+* Create or update support records
+* Draft an initial response
+* Identify requests that require escalation
+* Monitor the status of each request
+* Handle workflow failures manually
 
-When these steps are handled manually, support teams can spend valuable time on administrative work instead of focusing on customer issues that require human attention.
-
-### Solution
-
-This workflow uses **n8n and AI** to automate the initial support workflow.
-
-When a new customer message is received, the system:
-
-1. Receives the customer message through a webhook.
-2. Checks Airtable for duplicate messages.
-3. Uses Google Gemini to classify the request.
-4. Generates an AI confidence score.
-5. Determines whether the request involves a refund.
-6. Determines whether human review is required.
-7. Creates a support ticket in Airtable.
-8. Generates a customer-facing draft response.
-9. Updates the ticket with the AI-generated response.
-10. Routes sensitive or uncertain requests for human review.
-11. Sends an internal Gmail notification when review is required.
-12. Tracks ticket status in Airtable.
-13. Automatically logs workflow errors and sends an internal error notification.
+This can create repetitive work and increase the risk of inconsistent handling.
 
 ---
 
-## 🎯 Business Objective
+## Solution
 
-The goal is not to completely replace human support agents.
+The automation creates an AI-assisted customer support intake and triage system.
 
-Instead, the automation handles repetitive first-level support tasks so human agents can focus on:
-
-* Sensitive customer requests
-* Refund-related issues
-* Unclear requests
-* Low-confidence AI classifications
-* Cases requiring human judgment
-
-The workflow creates a **human-in-the-loop support process** where AI handles repetitive tasks while people retain control over important decisions.
-
----
-
-## ⚙️ Workflow Architecture
+### Workflow
 
 ```text
 Customer Message
@@ -69,152 +41,72 @@ Webhook
        ↓
 Duplicate Check
        ↓
-IF Duplicate?
-   ├── TRUE → Stop
-   │
-   └── FALSE
-          ↓
-   Gemini AI Classification
-          ↓
-      Parse JSON
-          ↓
-   Airtable - Create Ticket
-          ↓
-   Gemini AI Draft Response
-          ↓
-   Airtable - Update Ticket
-          ↓
-   Check Human Review
-       ├── TRUE
-       │    ↓
-       │   Gmail Internal Alert
-       │    ↓
-       │   Airtable Update
-       │    ↓
-       │   Human Review
-       │
-       └── FALSE
-            ↓
-         Completed
+AI Classification — Google Gemini
+       ↓
+Parse AI Result
+       ↓
+Create Support Ticket — Airtable
+       ↓
+AI Draft Response — Google Gemini
+       ↓
+Update Ticket
+       ↓
+Human Review Check
+      ↙       ↘
+    YES        NO
+     ↓          ↓
+Gmail Alert   Complete
+     ↓
+Airtable Status Update
 ```
-
-### Error Handling Workflow
-
-```text
-Main Workflow Error
-       ↓
-Error Trigger
-       ↓
-Airtable - Error Log
-       ↓
-Gmail - Error Alert
-```
-
-The error workflow operates separately from the main workflow and is automatically triggered when the configured main workflow encounters an error.
 
 ---
 
-# 🔄 Main Workflow
+## Business Objective
 
-## 1. Webhook — Receive Customer Message
+The goal is to reduce repetitive customer support triage work while maintaining human oversight for requests that require additional attention.
 
-The workflow begins when a new customer support message is received through an n8n webhook.
+The system is designed to:
 
-### Example input
-
-```json
-{
-  "message_id": "MSG-001",
-  "customer_name": "John Smith",
-  "customer_email": "john@example.com",
-  "message": "I was charged twice for my subscription."
-}
-```
-
-The webhook provides the information required for the workflow to process the request.
+* Automatically categorize incoming requests
+* Generate an initial customer-facing draft
+* Store structured support information
+* Detect duplicate messages
+* Identify low-confidence requests
+* Escalate refund-related requests
+* Notify the support team when human review is required
+* Track ticket processing status
+* Log workflow errors
 
 ---
 
-## 2. Airtable — Duplicate Check
+## AI Classification
 
-Before processing the message, the workflow searches Airtable using the incoming **Message ID**.
+Google Gemini analyzes each customer message and assigns exactly one category:
 
-This prevents the same customer message from being processed multiple times.
+* **Billing**
+* **Access**
+* **Scheduling**
+* **Technical Support**
+* **General Question**
+* **Refund Request**
 
-### Duplicate logic
-
-```text
-Message ID already exists?
-        ↓
-   YES → Stop
-   NO  → Continue
-```
-
-This provides basic duplicate prevention and helps avoid:
-
-* Duplicate tickets
-* Duplicate AI processing
-* Duplicate notifications
-* Unnecessary workflow executions
-
----
-
-## 3. Gemini — AI Classification
-
-Google Gemini analyzes the customer message and classifies it into exactly one support category.
-
-### Supported categories
-
-* Billing
-* Access
-* Scheduling
-* Technical Support
-* General Question
-* Refund Request
-
-Gemini also returns:
+The AI also generates:
 
 * Confidence score
-* Human review recommendation
-* Refund flag
-* Classification reason
+* Human review indicator
+* Refund indicator
+* Brief classification reason
 
-### Example AI output
-
-```json
-{
-  "category": "Refund Request",
-  "confidence_score": 100,
-  "human_review_required": false,
-  "refund_request": true,
-  "reason": "The customer is reporting a double charge, which requires review."
-}
-```
-
-The AI response is parsed into structured JSON so the individual values can be used by later n8n nodes.
+The AI is instructed to return structured JSON so the workflow can reliably process the classification results.
 
 ---
 
-# 🤖 AI Classification Rules
+## Human Review Logic
 
-The classification prompt instructs Gemini to:
+The workflow uses deterministic business rules in addition to the AI classification.
 
-* Select exactly one category.
-* Identify refund-related requests.
-* Provide a confidence score from 0–100.
-* Identify whether human review is required.
-* Avoid inventing information.
-* Return structured JSON.
-
-The prompt is kept directly inside the workflow so it can be easily reviewed and edited.
-
----
-
-# 👤 Human Review Logic
-
-The workflow uses deterministic business rules in n8n to make sure sensitive cases are routed to a human.
-
-### Human review is required when:
+A request is routed for human review when **any** of the following conditions are met:
 
 ```text
 Refund Request = TRUE
@@ -224,445 +116,308 @@ OR
 AI Human Review Required = TRUE
 ```
 
-The IF node uses **ANY / OR** logic.
+This prevents the workflow from relying solely on the AI's review decision.
 
-### Example
+### Examples
 
-A customer message with:
+**Refund Request**
 
-```text
-Refund Request = TRUE
-Confidence = 100
-AI Human Review = FALSE
-```
+A customer reports being charged twice or requests money back.
 
-still goes to human review because:
+→ Refund Request
+→ Human Review Required
+→ Internal Gmail notification
 
-```text
-Refund Request = TRUE
-```
+**Low Confidence**
 
-This prevents the AI's individual output from overriding an important business rule.
+A customer sends a vague message that does not clearly identify the issue.
+
+→ Low confidence score
+→ Human Review Required
+→ Internal Gmail notification
+
+**Normal Request**
+
+A customer asks a straightforward question with high classification confidence.
+
+→ No human review required
+→ Ticket marked Completed
 
 ---
 
-# ✍️ AI Draft Response
+## AI Draft Response
 
-After classification, a second Gemini step generates a customer-facing draft response.
+After classification, Google Gemini generates a short customer-facing draft response.
 
 The AI is instructed to:
 
-* Be professional and helpful.
-* Keep the response clear.
-* Avoid inventing company policies or information.
-* Never claim that a refund has been approved.
-* Avoid making final decisions on sensitive requests.
-* Treat the output as a draft for a human support agent.
+* Be clear and professional
+* Avoid inventing company policies or account information
+* Avoid claiming that a refund has been approved
+* Acknowledge refund requests without making final decisions
+* Treat the output as a draft for a human support agent
 
-### Example
-
-For a refund-related request, the AI can acknowledge the customer's concern and explain that the request will be reviewed without falsely promising a refund.
-
-This keeps the workflow **human-in-the-loop**.
+This allows the support team to start with an AI-generated response while maintaining human control over final communication.
 
 ---
 
-# 🗃️ Airtable — Ticket Logging
+## Airtable Ticket Logging
 
-Airtable acts as the support ticket database and workflow status tracker.
+Airtable acts as the support ticket database.
 
-### Support Tickets fields
+Each processed request can contain:
 
-| Field                 | Purpose                            |
-| --------------------- | ---------------------------------- |
-| Ticket ID             | Unique support ticket identifier   |
-| Message ID            | Unique incoming message identifier |
-| Customer Name         | Customer information               |
-| Customer Email        | Customer contact information       |
-| Customer Message      | Original customer request          |
-| Category              | AI-generated support category      |
-| Confidence Score      | AI confidence level                |
-| Draft Response        | AI-generated response              |
-| Human Review Required | Human escalation flag              |
-| Refund Request        | Refund detection flag              |
-| Status                | Current ticket status              |
-| Created At            | Ticket creation date               |
-| Processed At          | Processing completion date         |
-| Error Message         | Error information when applicable  |
+* Ticket ID
+* Message ID
+* Customer Name
+* Customer Email
+* Customer Message
+* Category
+* Confidence Score
+* Draft Response
+* Human Review Required
+* Refund Request
+* Status
+* Created At
+* Processed At
+* Error Message
+
+### Status Tracking
+
+The workflow uses status values to track the processing lifecycle:
+
+```text
+Received
+   ↓
+Processing
+   ↓
+Completed
+
+OR
+
+Processing
+   ↓
+Human Review
+
+OR
+
+Processing
+   ↓
+Error
+```
+
+This provides operational visibility into the state of each support request.
 
 ---
 
-# 📊 Status Tracking
+## Duplicate Prevention
 
-The workflow tracks the support request through different stages.
+Before processing a new customer message, the workflow checks Airtable using the incoming **Message ID**.
 
-### Processing
-
-When the ticket is initially created:
+If the Message ID already exists:
 
 ```text
-Status = Processing
+Message Received
+       ↓
+Duplicate Check
+       ↓
+Duplicate Found
+       ↓
+Stop Processing
 ```
 
-### Completed
-
-If the request does not require human review:
-
-```text
-Status = Completed
-```
-
-### Human Review
-
-If the request meets any human-review condition:
-
-```text
-Status = Human Review
-Human Review Required = TRUE
-```
-
-### Error
-
-Workflow errors are recorded separately:
-
-```text
-Status = Error
-```
-
-This provides visibility into the current state of each support request.
+This prevents the same customer message from creating duplicate support tickets or triggering duplicate notifications.
 
 ---
 
-# 📧 Internal Human Review Notification
+## Internal Human Review Notification
 
-When the IF node determines that human review is required, Gmail sends an internal notification to the support team.
+When human review is required, Gmail sends an internal notification containing relevant information such as:
 
-The notification includes information such as:
-
-* Customer name
-* Customer email
-* Support category
+* Customer information
+* Customer message
+* Request category
 * Confidence score
 * Refund status
-* Customer message
 * AI-generated draft response
 * Reason for review
 
-The support agent can then review the request before sending a final response.
+The support team can then review the request before sending a final response.
 
 ---
 
-# 🛡️ Error Handling
+## Error Handling
 
-A separate n8n error workflow provides basic error monitoring.
-
-### Error workflow
-
-```text
-Error Trigger
-      ↓
-Airtable Error Log
-      ↓
-Gmail Error Alert
-```
-
-When an error occurs in the configured main workflow, the Error Trigger passes the error information to the error-handling workflow.
-
-The system then:
-
-1. Logs the error in Airtable.
-2. Records the error message.
-3. Records the error timestamp.
-4. Sends an internal Gmail notification.
-
-This makes workflow failures easier to identify and troubleshoot.
-
----
-
-# 🧪 Testing
-
-The workflow was tested using multiple scenarios.
-
-## Test 1 — Normal Customer Question
-
-**Input:**
-
-> What are your customer support hours?
-
-### Result
-
-```text
-Category: General Question
-Confidence: 98
-Refund Request: FALSE
-Human Review Required: FALSE
-Status: Completed
-```
-
-The request completed without triggering human review.
-
----
-
-## Test 2 — Refund Request
-
-**Input:**
-
-> I was charged twice for my subscription and I want a refund.
-
-### Expected behavior
-
-```text
-Category: Refund Request
-Refund Request: TRUE
-Human Review Required: TRUE
-Status: Human Review
-Internal Gmail Alert: Sent
-```
-
-The workflow correctly routes the request for human review.
-
----
-
-## Test 3 — Low Confidence Request
-
-**Input:**
-
-> Something is wrong with my account and I need help with this issue.
-
-### Result
-
-```text
-Confidence: 45
-Refund Request: FALSE
-Human Review Required: TRUE
-Status: Human Review
-```
-
-Because the confidence score was below 80, the workflow routed the request to human review.
-
----
-
-## Test 4 — Duplicate Message
-
-The same Message ID was submitted again.
-
-### Expected behavior
-
-```text
-Message ID already exists
-        ↓
-Duplicate = TRUE
-        ↓
-Stop processing
-```
-
-The existing Airtable record was found and the duplicate request was prevented from creating another ticket.
-
----
-
-## Test 5 — Error Handling
-
-A controlled workflow error was used to test the error-handling process.
-
-### Result
+A separate n8n error workflow handles unexpected workflow failures.
 
 ```text
 Workflow Error
       ↓
-Error Trigger
+n8n Error Trigger
       ↓
 Airtable Error Log
       ↓
 Gmail Error Alert
 ```
 
-The error was successfully logged and an internal Gmail notification was sent.
+The error workflow records the failure and sends an internal notification so the issue can be identified and addressed.
+
+This provides basic monitoring and operational visibility without requiring the main workflow to handle every possible failure scenario directly.
 
 ---
 
-# 🧰 Tools & Technologies
+## Testing
 
-### Automation
+The workflow was tested using multiple scenarios.
 
-**n8n**
+### Test 1 — Normal Customer Question
 
-Used to orchestrate the complete workflow, control business logic, parse AI output, route requests, and handle errors.
+**Message:**
 
-### AI
+> What are your customer support hours?
 
-**Google Gemini**
+**Result:**
 
-Used for:
+* Category: General Question
+* Confidence: 98%
+* Refund Request: No
+* Human Review: No
+* Status: Completed
+* AI Draft Response: Generated
 
-* Customer message classification
-* Confidence scoring
-* Refund detection
-* Human-review recommendation
-* Draft response generation
+### Test 2 — Refund Request
 
-### Database / Logging
+**Example:**
 
-**Airtable**
+> I was charged twice for my subscription.
 
-Used for:
+**Result:**
 
-* Support ticket storage
-* Customer message logging
-* AI classification data
-* Draft response storage
-* Status tracking
-* Human-review tracking
-* Error logging
+* Category: Refund Request
+* Refund Request: Yes
+* Human Review: Yes
+* Status: Human Review
+* Internal Gmail notification: Sent
 
-### Notifications
+### Test 3 — Low Confidence Request
 
-**Gmail**
+**Example:**
 
-Used for:
+> Something is wrong with my account and I need help with this issue.
 
-* Internal human-review alerts
-* Workflow error notifications
+**Result:**
 
-### Input
+* Confidence: 45%
+* Human Review: Yes
+* Draft Response: Generated
+* Status: Human Review
 
-**Webhook**
+### Test 4 — Duplicate Message
 
-Used to receive customer support messages from an external application or system.
+A previously processed Message ID was submitted again.
 
----
+**Result:**
 
-# 🧠 Automation Design Decisions
+* Existing Airtable record detected
+* Duplicate processing prevented
+* No duplicate support ticket created
 
-## AI + Deterministic Rules
+### Test 5 — Error Handling
 
-AI is used where natural-language understanding is useful.
+A workflow error was simulated and the error workflow was triggered.
 
-n8n handles critical business rules deterministically.
+**Result:**
 
-For example:
-
-```text
-Refund Request → Human Review
-```
-
-is enforced by the workflow even if the AI's `human_review_required` value is incorrect.
-
-This creates a more controlled AI automation architecture.
+* Error recorded in Airtable
+* Gmail error alert sent successfully
 
 ---
 
-## Structured AI Output
+## Tools & Technologies
 
-Gemini returns structured JSON for classification.
-
-Example:
-
-```json
-{
-  "category": "Billing",
-  "confidence_score": 95,
-  "human_review_required": false,
-  "refund_request": false,
-  "reason": "The customer is asking about a billing-related issue."
-}
-```
-
-The structured output makes the AI result easier to process inside n8n.
+| Tool              | Purpose                                   |
+| ----------------- | ----------------------------------------- |
+| **n8n**           | Workflow automation and orchestration     |
+| **Google Gemini** | AI classification and response generation |
+| **Airtable**      | Ticket database and status tracking       |
+| **Gmail**         | Internal support and error notifications  |
+| **Webhook**       | Customer message intake                   |
 
 ---
 
-## Human-in-the-Loop
+## Key Design Decisions
 
-The system does not automatically make sensitive decisions.
+### AI + Deterministic Rules
 
-Instead, it identifies cases that require human attention and sends an internal notification.
+AI handles natural-language understanding and classification, while deterministic workflow rules handle critical escalation conditions.
 
-This allows automation to handle repetitive work while keeping human oversight for important customer interactions.
+This allows the system to use AI where interpretation is needed while keeping important business rules predictable.
 
----
+### Human-in-the-Loop
 
-# 📈 Business Outcome
+The automation does not attempt to fully replace human support.
 
-This automation helps a support team reduce repetitive manual work involved in the initial handling of customer requests.
+Refund requests and uncertain cases are routed to a human before a final response is sent.
 
-It provides:
+### Structured AI Output
 
-* Faster initial request processing
-* Automatic support categorization
-* AI-assisted response drafting
-* Consistent escalation rules
-* Duplicate prevention
-* Centralized ticket tracking
-* Human oversight for sensitive cases
-* Basic workflow error monitoring
+The classification prompt requires valid JSON so n8n can reliably extract and process:
 
-The result is a structured support workflow where incoming requests can be automatically **received, understood, classified, logged, drafted, routed, and tracked**.
+* Category
+* Confidence score
+* Human review status
+* Refund status
+* Classification reason
 
----
+### Duplicate Prevention
 
-# 🔐 Security & Credentials
+Message IDs are checked before processing to prevent duplicate tickets and notifications.
 
-No API keys, passwords, or private credentials should be stored in this repository.
+### Centralized Logging
 
-Credentials for:
-
-* Google Gemini
-* Airtable
-* Gmail
-* n8n
-
-are configured separately inside the n8n environment.
-
-Any exported n8n workflow should be reviewed before committing to GitHub to ensure credentials and sensitive information are not included.
+Airtable provides a central record of customer requests, classifications, drafts, review status, and processing status.
 
 ---
 
-# 📁 Suggested Project Structure
+## Business Outcome
 
-```text
-ai-customer-support-automation/
-│
-├── README.md
-│
-├── workflow/
-│   └── n8n-workflow.json
-│
-├── screenshots/
-│   ├── workflow-overview.png
-│   ├── airtable-tickets.png
-│   └── error-handling.png
-│
-└── demo/
-    └── test-results.md
-```
+This workflow demonstrates how AI and automation can support a customer service operation by handling repetitive first-level triage tasks.
+
+Instead of manually processing every incoming request, the system can:
+
+**Receive → Understand → Classify → Draft → Log → Escalate when needed**
+
+This creates a more structured support intake process while preserving human oversight for sensitive or uncertain requests.
 
 ---
 
-# 💼 Portfolio Summary
+## Portfolio Demonstration
 
-**AI Customer Support Automation — n8n**
+A Loom walkthrough is available to demonstrate the workflow, configuration, testing, and business use case.
 
-Designed and built an AI-powered customer support workflow using n8n, Google Gemini, Airtable, Gmail, and Webhooks. The system automatically classifies customer requests, generates draft responses, prevents duplicate processing, tracks ticket status, routes refunds and low-confidence cases for human review, and provides automated error logging and notifications.
+**Loom Demo:**
 
-### Key Skills Demonstrated
-
-* n8n workflow automation
-* AI workflow design
-* Google Gemini integration
-* Prompt engineering
-* Structured JSON parsing
-* Webhook automation
-* Airtable database workflows
-* Conditional logic
-* Human-in-the-loop automation
-* Duplicate prevention
-* Status tracking
-* Error handling
-* Gmail notifications
-* Business process automation
 
 ---
 
-## 📌 Disclaimer
+## Security & Credentials
 
-This is a fictional portfolio project created to demonstrate workflow automation, AI integration, business logic, and operational automation capabilities. Customer information and company details used in testing are sample data.
+No API keys, passwords, authentication tokens, or private credentials are included in this repository.
+
+The live n8n workflow, connected accounts, API credentials, webhook configuration, and private business data are kept separate from the public portfolio documentation.
+
+---
+
+## Portfolio Documentation
+
+This repository documents the workflow architecture, business logic, AI prompts, testing process, and results.
+
+The live workflow configuration and connected credentials are kept private and are not included in the repository.
+
+---
+
+## Disclaimer
+
+This is a portfolio project created to demonstrate AI automation, workflow design, customer support operations, and system integration skills.
+
+The business, customer data, and scenarios used in this project are fictional or test data.
