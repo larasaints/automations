@@ -13,7 +13,6 @@ This document provides a high-level overview of the AI Real Estate Lead Qualific
 - [Key Features](#key-features)
 - [Business Value](#business-value)
 - [Success Metrics](#success-metrics)
-
 ---
 
 ## 🎯 What is This System?
