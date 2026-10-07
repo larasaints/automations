@@ -6,17 +6,17 @@
 
 ## 📋 Table of Contents
 
-- [Project Overview](#project-overview)
-- [High-Level Architecture](#high-level-architecture)
-- [Tech Stack](#tech-stack)
-- [Features](#features)
-- [Dashboard & Reporting](#dashboard--reporting)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Testing](#testing)
-- [Business Value](#business-value)
-- [My Role](#my-role)
-- [License](#license)
+- [Project Overview](#-project-overview)
+- [High-Level Architecture](#-high-level-architecture)
+- [Tech Stack](#-tech-stack)
+- [Features](#-features)
+- [Dashboard & Reporting](#-dashboard--reporting)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Testing](#-testing)
+- [Business Value](#-business-value)
+- [My Role](#-my-role)
+- [License](#-license)
 
 ---
 
