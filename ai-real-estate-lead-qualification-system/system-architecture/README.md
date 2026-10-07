@@ -6,13 +6,14 @@ This document provides a high-level overview of the AI Real Estate Lead Qualific
 
 ## 📋 Table of Contents
 
-- [What is This System?](#-what-is-this-system)
-- [Problem Statement](#-problem-statement)
-- [Solution Overview](#-solution-overview)
-- [System Architecture](#-system-architecture)
-- [Key Features](#-key-features)
-- [Business Value](#-business-value)
-- [Success Metrics](#-success-metrics)
+- [What is This System?](#what-is-this-system)
+- [Problem Statement](#problem-statement)
+- [Solution Overview](#solution-overview)
+- [System Architecture](#system-architecture)
+- [Key Features](#key-features)
+- [Business Value](#business-value)
+- [Success Metrics](#success-metrics)
+
 ---
 
 ## 🎯 What is This System?
@@ -96,113 +97,73 @@ It uses **Conversational AI** to engage new real estate leads, collect qualifica
 ---
 
 ## 🏗️ System Architecture
-### High-Level Architecture
-┌─────────────────────────────────────────────────────────┐
-│ AI Lead Qualification System │
-├─────────────────────────────────────────────────────────┤
-│ │
-│ ┌──────────────┐ ┌──────────────┐ ┌───────────┐ │
-│ │ New Lead │ → │ Conversation│ → │ AI │ │
-│ │ Entry │ │ AI │ │Qualification││
-│ └──────────────┘ └──────────────┘ └───────────┘ │
-│ ↓ ↓ ↓ │
-│ ┌──────────────┐ ┌──────────────┐ ┌───────────┐ │
-│ │ Contact │ ← │ Data │ ← │ Scoring │ │
-│ │ Record │ │ Extraction │ │ Engine │ │
-│ └──────────────┘ └──────────────┘ └───────────┘ │
-│ ↓ │
-│ ┌──────────────────────────────────────────────────┐ │
-│ │ CRM Data Layer │ │
-│ │ - Custom fields for qualification data │ │
-│ │ - Lead type, budget, timeline, AI score │ │
-│ │ - Qualification status flags │ │
-│ └──────────────────────────────────────────────────┘ │
-│ ↓ │
-│ ┌──────────────────────────────────────────────────┐ │
-│ │ Workflow Automation │ │
-│ │ - AI qualification workflow │ │
-│ │ - Lead routing workflow │ │
-│ │ - Exception handling workflow │ │
-│ └──────────────────────────────────────────────────┘ │
-│ ↓ │
-│ ┌──────────────────────────────────────────────────┐ │
-│ │ Opportunity Pipeline │ │
-│ │ - Stage 1: Hot Lead │ │
-│ │ - Stage 2: Qualified │ │
-│ │ - Stage 3: Nurture │ │
-│ │ - Stage 4: Unqualified │ │
-│ └──────────────────────────────────────────────────┘ │
-│ ↓ │
-│ ┌──────────────────────────────────────────────────┐ │
-│ │ Dashboard & Reporting │ │
-│ │ - Real-time KPIs │ │
-│ │ - Lead distribution charts │ │
-│ │ - Pipeline analytics │ │
-│ └──────────────────────────────────────────────────┘ │
-│ │
-└─────────────────────────────────────────────────────────┘
 
----
+### High-Level Flow
+New Lead → AI Conversation → Qualification → CRM Update → Routing → Dashboard
 
-## 🔄 High-Level Data Flow
 
-### Stage 1: Lead Entry
+### Components
+
+1. **Lead Entry Point**
+   - Website forms, social media ads, referrals
+   - Contact record creation
+   - Initial workflow triggers
+
+2. **Conversation AI**
+   - Natural language dialogue
+   - Multi-turn conversation
+   - Data extraction from responses
+   - Lead type detection (Buyer/Seller/Investor/Renter)
+
+3. **Qualification Engine**
+   - AI-powered scoring (0-100)
+   - Status determination
+   - Exception flagging for human review
+
+4. **CRM Data Layer**
+   - Custom contact fields
+   - Structured data storage
+   - Lead categorization
+   - Fields: Lead Type, Budget, Timeline, AI Score, Qualification Status
+
+5. **Workflow Automation**
+   - AI qualification workflow
+   - Lead routing workflow
+   - Exception handling workflow
+
+6. **Opportunity Pipeline**
+   - Multi-stage pipeline
+   - Stage 1: Hot Lead
+   - Stage 2: Qualified
+   - Stage 3: Nurture
+   - Stage 4: Unqualified
+   - Value tracking based on lead budget
+
+7. **Dashboard & Analytics**
+   - Real-time KPIs
+   - Lead distribution charts
+   - Pipeline analytics
+   - 8 widgets total
+
+### Data Flow
+
+**Stage 1: Lead Entry**
 Lead Source → CRM Contact Creation → Workflow Trigger
 
-### Stage 2: AI Engagement
+**Stage 2: AI Engagement**
 Workflow → AI Conversation → Data Collection
 
-### Stage 3: Qualification
+**Stage 3: Qualification**
 Conversation Data → AI Analysis → Score Calculation → Status Determination
 
-### Stage 4: Data Storage
+**Stage 4: Data Storage**
 Qualification Results → CRM Field Updates → Tag Assignment
 
-### Stage 5: Routing
+**Stage 5: Routing**
 Status Reading → Opportunity Creation → Task Assignment → Team Notification
 
-### Stage 6: Monitoring
+**Stage 6: Monitoring**
 CRM Data → Dashboard Aggregation → Real-Time Metrics
-
----
-
-## 🔧 System Components
-
-### 1. Lead Entry Point
-- Website forms, social media ads, referrals
-- Contact record creation
-- Initial workflow triggers
-
-### 2. Conversation AI
-- Natural language dialogue
-- Multi-turn conversation
-- Data extraction from responses
-- Lead type detection
-
-### 3. Qualification Engine
-- AI-powered scoring (0-100)
-- Status determination
-- Exception flagging
-
-### 4. CRM Data Layer
-- Custom contact fields
-- Structured data storage
-- Lead categorization
-
-### 5. Workflow Automation
-- AI qualification workflow
-- Lead routing workflow
-- Exception handling workflow
-
-### 6. Opportunity Pipeline
-- Multi-stage pipeline
-- Value tracking
-- Stage progression
-
-### 7. Dashboard & Analytics
-- Real-time KPIs
-- Distribution charts
-- Performance metrics
 
 ---
 
@@ -267,21 +228,19 @@ CRM Data → Dashboard Aggregation → Real-Time Metrics
 
 ## 📊 Success Metrics
 
-### Key Performance Indicators (KPIs):
-
-#### Operational Metrics:
+### Operational Metrics:
 - **AI Qualification Completion Rate**: Target 70%+
 - **Average AI Score**: Target 60-75
 - **Hot Lead Percentage**: Target 30%+
 
-#### Business Metrics:
+### Business Metrics:
 - **Response Time**: Target < 1 minute
 - **Conversion Rate (Lead → Qualified)**: Target 40%+
 - **Conversion Rate (Qualified → Won)**: Target 25%+
 - **Pipeline Value**: Growing month-over-month
 - **Unqualified Rate**: Target < 20%
 
-#### Efficiency Metrics:
+### Efficiency Metrics:
 - **Manual Qualification Time Saved**: 15 min/lead eliminated
 - **Leads Handled per Agent**: 5x increase
 - **Error/Handoff Rate**: Target < 10%
