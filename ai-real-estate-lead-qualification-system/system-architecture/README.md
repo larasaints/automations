@@ -6,13 +6,13 @@ This document provides a high-level overview of the AI Real Estate Lead Qualific
 
 ## 📋 Table of Contents
 
-- [What is This System?](#what-is-this-system)
-- [Problem Statement](#problem-statement)
-- [Solution Overview](#solution-overview)
-- [System Architecture](#system-architecture)
-- [Key Features](#key-features)
-- [Business Value](#business-value)
-- [Success Metrics](#success-metrics)
+- [What is This System?](#-what-is-this-system)
+- [Problem Statement](#-problem-statement)
+- [Solution Overview](#-solution-overview)
+- [System Architecture](#-system-architecture)
+- [Key Features](#-key-features)
+- [Business Value](#-business-value)
+- [Success Metrics](#-success-metrics)
 ---
 
 ## 🎯 What is This System?
