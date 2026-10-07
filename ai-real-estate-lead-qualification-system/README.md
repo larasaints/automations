@@ -214,13 +214,13 @@ ai-real-estate-lead-qualification/
 ├── LICENSE
 │
 ├── docs/
-│   ├── architecture.md
-│   └── system-overview.md
+│   ├── system-architecture.md
+│   
 │
 ├── screenshots/
-│   ├── architecture.png
-│   ├── ai-conversation.png
-│   ├── pipeline.png
+│   ├── 3 workflows.png
+│   ├── contacts.png
+│   ├── opprtunities-pipeline.png
 │   └── dashboard.png
 │
 └── examples/
