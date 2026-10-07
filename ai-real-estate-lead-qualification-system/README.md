@@ -220,11 +220,8 @@ ai-real-estate-lead-qualification/
 ├── screenshots/
 │   ├── 3 workflows.png
 │   ├── contacts.png
-│   ├── opprtunities-pipeline.png
+│   ├── opprtunities-pipeline.png/lead-samples
 │   └── dashboard.png
-│
-└── examples/
-    └── sample-lead.json
 ```
 
 ---
