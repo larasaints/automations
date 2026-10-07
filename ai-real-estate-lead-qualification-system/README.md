@@ -1,88 +1,302 @@
 # AI Real Estate Lead Qualification System
 
-An AI-powered lead qualification workflow designed to help real estate teams automatically engage new leads, collect key qualification information, organize lead data, and route opportunities for the appropriate next step.
+An AI-powered real estate lead qualification system built with **GoHighLevel** to automate initial lead engagement, qualification, CRM data organization, opportunity routing, human handoff, and performance visibility.
 
-## Overview
+---
 
-Real estate teams often receive leads from multiple sources, but manually qualifying each lead can be time-consuming and inconsistent.
+## Project Overview
 
-This project demonstrates a CRM-based AI qualification system that helps automate the early stages of the sales process while keeping human agents involved when their attention is needed.
+Real estate teams often receive new leads that require immediate attention, but manually qualifying every lead can consume valuable time and create inconsistent follow-up.
 
-The system is designed to:
+This project demonstrates an automated AI qualification system that engages new leads, gathers relevant information, evaluates their qualification status, and organizes them within the CRM.
 
-* Start an AI conversation with new leads
-* Collect relevant buyer or seller information
-* Structure and store qualification data
-* Determine lead qualification status
-* Route qualified leads into the appropriate pipeline stage
-* Identify leads requiring human attention
-* Handle qualification errors and handoffs
-* Provide visibility through a CRM dashboard
+The system is designed to help a real estate team:
 
-## High-Level Workflow
+* Respond to new leads quickly
+* Collect structured qualification information
+* Identify high-priority opportunities
+* Separate qualified and lower-priority leads
+* Flag leads requiring human attention
+* Prevent unqualified leads from cluttering active opportunities
+* Monitor qualification performance through a CRM dashboard
+
+### High-Level Architecture
 
 ```text
 New Lead
-   ↓
+    ↓
 AI Conversation
-   ↓
+    ↓
 Lead Qualification
-   ↓
+    ↓
 AI Data Extraction
-   ↓
-CRM Data Update
-   ↓
-Lead Classification
-   ↓
-Opportunity Routing
-   ↓
-Human Handoff When Needed
-   ↓
-CRM Dashboard
+    ↓
+CRM Contact Update
+    ↓
+Qualification Status
+    ↓
+Lead Routing
+    ↓
+Opportunity Pipeline
+    ↓
+Human Handoff When Required
+    ↓
+Dashboard & Reporting
 ```
 
-## Key Capabilities
+---
 
-### AI Lead Qualification
+## Tech Stack
 
-The AI engages new leads conversationally and gathers the information required by the sales team.
+| Technology                | Purpose                                                          |
+| ------------------------- | ---------------------------------------------------------------- |
+| **GoHighLevel**           | CRM, workflows, contacts, opportunities, pipeline, and dashboard |
+| **Conversation AI**       | Conversational lead qualification                                |
+| **CRM Workflows**         | Automation and lead routing                                      |
+| **Custom Contact Fields** | Structured qualification data                                    |
+| **Opportunity Pipeline**  | Lead progression and sales visibility                            |
+| **Tags**                  | Lead categorization and workflow tracking                        |
+| **Dashboard**             | Qualification and pipeline reporting                             |
 
-### Structured Data Capture
+---
 
-Important qualification information is converted into structured CRM data instead of remaining only inside the conversation.
+## Features
 
-### Intelligent Lead Routing
+### 🤖 AI Lead Qualification
 
-Leads are categorized according to their qualification outcome and routed to the appropriate stage of the sales pipeline.
+The AI engages new leads conversationally and collects the information required by the sales team.
 
-### Human Handoff
+The qualification process supports different lead types, including:
 
-The system recognizes situations that require human involvement and flags those leads for follow-up.
+* Buyer
+* Seller
+* Investor
+* Renter
 
-### Error Handling
+### 📋 Structured CRM Data
 
-The workflow includes handling for qualification failures so that leads do not silently fall through the process.
+Qualification information is stored in structured CRM fields rather than remaining only within the conversation.
 
-### Pipeline Visibility
+Example data includes:
 
-A CRM dashboard provides visibility into qualified leads, hot leads, handoff requirements, errors, and overall opportunity activity.
+* Lead type
+* Budget
+* Timeline
+* AI score
+* Qualification status
 
-## Technology
+### 🎯 Lead Classification
 
-* GoHighLevel
-* Conversation AI
-* CRM Workflows
-* Custom Contact Fields
-* Opportunity Pipeline
-* AI-assisted data extraction
-* Automated notifications
-* CRM Dashboard
+The system categorizes leads into different qualification outcomes:
 
-## Project Architecture
+| Qualification Status | Purpose                                                   |
+| -------------------- | --------------------------------------------------------- |
+| **Hot Lead**         | High-priority lead requiring immediate attention          |
+| **Qualified**        | Lead meeting the qualification criteria                   |
+| **Nurture**          | Lead that may require future engagement                   |
+| **Unqualified**      | Lead that does not meet the active qualification criteria |
 
-The complete implementation is intentionally not published. This repository presents the system architecture and project outcome while keeping the underlying workflow configuration private.
+Additional system states are used for **Error** and **AI Handoff Required** situations.
 
-The implementation includes proprietary workflow logic, AI instructions, qualification rules, field mappings, and CRM configuration that are not included in this repository.
+### 🔀 Automated Lead Routing
+
+Based on the qualification outcome, the system routes leads to the appropriate next step within the CRM and opportunity pipeline.
+
+### 🚨 Human Handoff
+
+Leads requiring human intervention can be identified and surfaced for team follow-up.
+
+This allows automation to handle the initial qualification process while keeping human agents involved when necessary.
+
+### 🛡️ Error Handling
+
+The system accounts for qualification errors and handoff scenarios so that leads do not silently fall through the workflow.
+
+### 📊 AI Qualification Dashboard
+
+The project includes a CRM dashboard designed to monitor:
+
+* Hot Leads
+* Qualified Leads
+* Nurture Leads
+* Unqualified / Error / AI Handoff Required leads
+* Opportunity counts by status
+* Leads by lead type
+* Contacts by tag
+* Total contacts
+
+The **Unqualified / Error / AI Handoff Required** KPI is intentionally a combined count. It accumulates leads belonging to any of those categories, while tags/statuses allow the individual categories to be differentiated.
+
+---
+
+## Dashboard Test Data
+
+The dashboard was validated using six sample contacts representing different qualification outcomes:
+
+| Contact        | Lead Type | AI Score | Qualification |
+| -------------- | --------- | -------: | ------------- |
+| Maria Santos   | Buyer     |       85 | Hot Lead      |
+| Juan Dela Cruz | Seller    |       72 | Qualified     |
+| Ana Reyes      | Buyer     |       58 | Nurture       |
+| Pedro Garcia   | Renter    |       25 | Unqualified   |
+| Sofia Lopez    | Investor  |       92 | Hot Lead      |
+| Miguel Torres  | Buyer     |       68 | Qualified     |
+
+Expected qualification distribution:
+
+```text
+Hot Lead       → 2
+Qualified      → 2
+Nurture        → 1
+Unqualified    → 1
+-------------------
+Total          → 6
+```
+
+The dashboard also tracks the broader combined category for **Unqualified / Error / AI Handoff Required** rather than treating those states as a single qualification outcome.
+
+---
+
+## Dashboard Metrics
+
+The current dashboard contains eight widgets:
+
+1. **Qualified** — count of qualified contacts
+2. **Nurture** — count of nurture contacts
+3. **Hot Leads** — count of hot leads
+4. **Unqualified / Error / AI Handoff Required** — combined count of leads requiring attention or falling outside the qualified categories
+5. **Opportunity Counts by Status** — opportunity distribution
+6. **Leads by Lead Type** — Buyer, Seller, Investor, and Renter distribution
+7. **Contacts by Tag** — qualification workflow tagging
+8. **Total Contacts** — total contacts in the test set
+
+---
+
+## Repository Structure
+
+```text
+ai-real-estate-lead-qualification/
+│
+├── README.md
+├── LICENSE
+│
+├── docs/
+│   ├── architecture.md
+│   └── system-overview.md
+│
+├── screenshots/
+│   ├── architecture.png
+│   ├── ai-conversation.png
+│   ├── pipeline.png
+│   └── dashboard.png
+│
+└── examples/
+    └── sample-lead.json
+```
+
+---
+
+## Installation
+
+This project is implemented within **GoHighLevel** rather than as a standalone software package.
+
+To reproduce the general system:
+
+1. Set up a GoHighLevel account or test sub-account.
+2. Create the required contact fields.
+3. Configure the qualification statuses and lead types.
+4. Create the real estate opportunity pipeline.
+5. Configure the AI qualification experience.
+6. Build the supporting CRM workflows.
+7. Configure the dashboard widgets.
+8. Add test contacts.
+9. Run the qualification workflow.
+10. Verify the resulting contact data, tags, opportunities, and dashboard metrics.
+
+> **Note:** The repository intentionally does not include private workflow exports, exact AI prompts, scoring formulas, internal conditions, field mappings, or complete CRM configuration.
+
+---
+
+## Usage
+
+The system follows this general process:
+
+### 1. New Lead
+
+A new real estate lead enters the CRM.
+
+### 2. AI Conversation
+
+The AI begins the initial qualification conversation.
+
+### 3. Qualification
+
+The system collects relevant information such as lead type, budget, timeline, and other qualification data.
+
+### 4. CRM Update
+
+The collected information is organized within the lead's CRM record.
+
+### 5. Classification
+
+The lead receives a qualification outcome such as:
+
+* Hot Lead
+* Qualified
+* Nurture
+* Unqualified
+
+### 6. Routing
+
+The lead is routed to the appropriate CRM or opportunity workflow.
+
+### 7. Human Handoff
+
+When human intervention is required, the lead is flagged for follow-up.
+
+### 8. Dashboard Monitoring
+
+The dashboard provides an overview of qualification activity, lead distribution, pipeline status, and contacts.
+
+---
+
+## Testing
+
+The system was designed with a six-contact test set covering multiple lead types and qualification outcomes.
+
+Validation includes:
+
+* Qualification status accuracy
+* Lead type distribution
+* AI score storage
+* Opportunity creation
+* Pipeline routing
+* Tag assignment
+* Human handoff identification
+* Dashboard metric accuracy
+
+The expected qualification distribution is:
+
+**2 Hot Leads + 2 Qualified + 1 Nurture + 1 Unqualified = 6 contacts.**
+
+---
+
+## Business Value
+
+The system demonstrates how AI and CRM automation can reduce manual qualification work while improving sales-team visibility.
+
+Potential business benefits include:
+
+* Faster initial lead response
+* More consistent qualification
+* Better organization of lead information
+* Faster identification of high-priority opportunities
+* Reduced manual data entry
+* Improved human handoff
+* Cleaner opportunity pipeline
+* Better visibility into lead distribution and qualification performance
+
+---
 
 ## Screenshots
 
@@ -98,40 +312,57 @@ The implementation includes proprietary workflow logic, AI instructions, qualifi
 
 ![Opportunity Pipeline](screenshots/pipeline.png)
 
-### CRM Dashboard
+### AI Qualification Dashboard
 
-![CRM Dashboard](screenshots/dashboard.png)
+![AI Qualification Dashboard](screenshots/dashboard.png)
 
-## Example Lead Data
+---
 
-A sanitized example of the type of structured information produced by the system is available in:
+## Example Data
 
-`examples/sample-lead.json`
+A sanitized example lead record is provided in:
 
-No real customer information or private CRM data is included.
+```text
+examples/sample-lead.json
+```
 
-## Business Value
+The example contains fictional data only and does not include real customer information.
 
-This system is designed to help real estate teams:
-
-* Reduce manual lead qualification
-* Respond to new leads faster
-* Keep qualification data organized
-* Prioritize high-value opportunities
-* Reduce missed follow-ups
-* Escalate leads that require human attention
-* Improve visibility across the sales pipeline
+---
 
 ## My Role
 
 **AI Automation Specialist & Workflow Designer**
 
-I designed and implemented the overall lead qualification workflow, including the AI conversation experience, CRM data structure, lead routing logic, human handoff process, error handling, and reporting layer.
+I designed and implemented the overall AI-powered lead qualification solution, including:
 
-The project demonstrates my ability to translate a business requirement into a practical AI-powered automation system.
+* AI qualification flow
+* CRM data structure
+* Lead classification
+* Opportunity routing
+* Human handoff logic
+* Error-handling approach
+* Dashboard reporting
+* Test-data validation
+
+The project demonstrates my ability to translate a business requirement into a practical AI automation system using a CRM environment.
+
+---
 
 ## Portfolio Note
 
-This repository intentionally focuses on **architecture, functionality, and business outcomes rather than exposing the complete implementation**.
+This repository intentionally focuses on the **system architecture, functionality, testing approach, and business value** rather than exposing the complete implementation.
 
-Detailed AI prompts, workflow configurations, scoring logic, field mappings, and internal automation rules are kept private.
+Private implementation details—including AI prompts, workflow configurations, scoring methodology, internal conditions, field mappings, and CRM automation logic—are intentionally excluded.
+
+This allows the project to demonstrate the design and engineering approach while protecting the underlying implementation.
+
+---
+
+## License
+
+This project is provided for **portfolio and demonstration purposes**.
+
+The source materials, workflow concepts, documentation, and implementation are not intended for commercial redistribution or reproduction without permission.
+
+See the [`LICENSE`](LICENSE) file for the applicable terms.
