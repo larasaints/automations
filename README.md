@@ -20,7 +20,7 @@ A curated index of production-grade workflow automation architectures, event-dri
 * **Architecture:** Event-Driven AI Support Pipeline with Duplicate Prevention, Human-in-the-Loop Escalation & Error Handling
 * **Description:** An AI-assisted customer support intake and triage system that receives customer messages through a webhook, uses Gemini to classify support requests and generate draft responses, logs structured ticket data in Airtable, prevents duplicate processing, and automatically escalates refund requests and low-confidence cases for human review.
 * **Deep Dive:** 💻 [View Project Folder & Documentation](https://github.com/larasaints/automations/tree/main/ai-customer-support-automation)
-* **Loom Walkthrough** [View Loom Video](https://www.loom.com/share/cef927cb92fa497eac2138751f16213b)
+* **Loom Walkthrough** [View Loom Video](https://www.loom.com/share/9b674f3cae38462597a53769d4dea911)
 
 ### 3. ⚡ Hands-Free AI-Powered Facebook Leads Automation Engine
 
