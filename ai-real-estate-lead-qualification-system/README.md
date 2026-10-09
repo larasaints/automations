@@ -7,7 +7,7 @@
 ## 📋 Table of Contents
 
 - [Project Overview](#-project-overview)
-- [High-Level Architecture](#-high-level-architecture)
+- [High-Level Architecture](#️-high-level-architecture)
 - [Tech Stack](#-tech-stack)
 - [Features](#-features)
 - [Dashboard & Reporting](#-dashboard--reporting)
