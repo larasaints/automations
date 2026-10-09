@@ -11,7 +11,6 @@
 - [Tech Stack](#-tech-stack)
 - [Features](#-features)
 - [Dashboard & Reporting](#-dashboard--reporting)
-- [Installation](#-installation)
 - [Usage](#-usage)
 - [Testing](#-testing)
 - [Loom Walkthrough](#-loom-walkthrough)
@@ -227,23 +226,6 @@ ai-real-estate-lead-qualification/
 
 
 ---
-
-## ⚙️ Installation
-
-This project is implemented within GoHighLevel rather than as a standalone software package.
-
-To reproduce the general system:
-
-1. Set up a GoHighLevel account or test sub-account
-2. Create the required contact fields
-3. Configure the qualification statuses and lead types
-4. Create the real estate opportunity pipeline
-5. Configure the AI qualification experience
-6. Build the supporting CRM workflows
-7. Configure the dashboard widgets
-8. Add test contacts
-9. Run the qualification workflow
-10. Verify the resulting contact data, tags, opportunities, and dashboard metrics
 
 > **Note:** The repository intentionally does not include private workflow exports, exact AI prompts, scoring formulas, internal conditions, field mappings, or complete CRM configuration.
 
