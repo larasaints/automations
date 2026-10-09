@@ -7,13 +7,13 @@
 ## 📋 Table of Contents
 
 - [Project Overview](#-project-overview)
-- [High-Level Architecture](#high-level-architecture)
-- [Tech Stack](#tech-stack)
+- [High-Level Architecture](#-high-level-architecture)
+- [Tech Stack](#-tech-stack)
 - [Features](#-features)
 - [Dashboard & Reporting](#-dashboard--reporting)
-- [Installation](#installation)
+- [Installation](#-installation)
 - [Usage](#-usage)
-- [Testing](#testing)
+- [Testing](#-testing)
 - [Loom Walkthrough](#-loom-walkthrough)
 - [Business Value](#-business-value)
 
