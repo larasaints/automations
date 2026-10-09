@@ -394,7 +394,7 @@ This creates a more structured support intake process while preserving human ove
 ## Portfolio Demonstration
 
 A Loom walkthrough is available to demonstrate the workflow, configuration, testing, and business use case.
-[View Loom Video](https://www.loom.com/share/cef927cb92fa497eac2138751f16213b)
+[View Loom Video](https://www.loom.com/share/9b674f3cae38462597a53769d4dea911)
 
 
 ---
