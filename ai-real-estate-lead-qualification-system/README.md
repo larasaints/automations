@@ -305,7 +305,8 @@ The system was designed with a six-contact test set covering multiple lead types
 **2 Hot Leads + 2 Qualified + 1 Nurture + 1 Unqualified = 6 contacts.**
 
 ---
-
+### Loom Walkthrough
+[View the Loom Video](https://www.loom.com/share/1702cbee673a4aeba5e459784b45feab)
 
 ---
 
@@ -329,19 +330,28 @@ The system demonstrates how AI and CRM automation can reduce manual qualificatio
 ## 📸 Screenshots
 
 ### System Architecture
-*[Insert architecture diagram screenshot]*
+<img width="1671" height="941" alt="AI Real Estate Lead Automation Architecture" src="https://github.com/user-attachments/assets/5c15ad6d-9499-4056-a2e2-4c143bc226d5" />
+
+### 3 WORKFLOWS
+<img width="1278" height="468" alt="workflow-ai-qualification" src="https://github.com/user-attachments/assets/aada762c-aadb-4298-953a-b943f829d05c" />
+<img width="1289" height="505" alt="workflow-lead-routing-process" src="https://github.com/user-attachments/assets/4592a819-6128-469c-b895-843a9b990dca" />
+<img width="1278" height="468" alt="workflow-ai-qualification" src="https://github.com/user-attachments/assets/24bcbaf8-a023-4336-aa78-8abad525438b" />
+
 
 ### AI Conversation
-*[Insert AI conversation screenshot]*
+<img width="1536" height="808" alt="contact 2" src="https://github.com/user-attachments/assets/d18139c0-23bf-49b4-8aed-5beebab5b871" />
+<img width="1535" height="798" alt="contact" src="https://github.com/user-attachments/assets/e95bbd8e-7f16-44b6-926e-e52753972043" />
+<img width="1128" height="368" alt="contact" src="https://github.com/user-attachments/assets/da5c76ef-1625-4227-8e0d-40ad501c2580" />
+
 
 ### Opportunity Pipeline
-*[Insert pipeline screenshot]*
+<img width="798" height="498" alt="opportunities" src="https://github.com/user-attachments/assets/d994df3b-f114-4d1d-a234-8739cda620be" />
+
 
 ### AI Qualification Dashboard
-*[Insert dashboard screenshot]*
+<img width="1128" height="441" alt="dashboard" src="https://github.com/user-attachments/assets/4f9e65ae-d1f0-4679-821d-a60839ad46d4" />
+
 
 ---
 
-## 📄 Example Data
 
-A sanitized example lead record is provided in:
